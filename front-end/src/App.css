@@ -1,0 +1,48 @@
+.nav {
+  height: 71px;
+  width: 100%;
+  padding-right: 9%;
+  color: #fafafa;
+  background-color: blue;
+  position: relative;
+  z-index: 9;
+}
+.nav h1 {
+  height: 100%;
+  font-size: 4rem;
+  position:absolute;
+  top: 0;
+  left: 9%;
+}
+.nav h1 a {
+  height: 100%;
+  font-size: 2rem;
+}
+.nav a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 0 16px;
+  color: #fafafa;
+}
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.column {
+  flex-direction: column;
+}
+.hgh {
+  height: 100vh;
+}
+.start {
+  justify-content: flex-start !important;
+}
+.span {
+  height: 100%;
+  width: 44px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
