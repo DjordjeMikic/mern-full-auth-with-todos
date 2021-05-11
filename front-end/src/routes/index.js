@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input, Button } from 'reactstrap';
-import { login } from '../store/user/actions';
+import { login, setUser } from '../store/user/actions';
 import { PasswordInput } from '../components/common';
 
 const Login = () => {
@@ -21,10 +21,11 @@ const Login = () => {
   const onSubmit = (a) => {
     a.preventDefault();
     dispatch(login(info));
-
-
-    // console.log(info);
   }
+
+  useEffect(() => {
+    dispatch(setUser());
+  }, [dispatch]);
 
   useEffect(() => {
     if(user.userInfo) {
@@ -62,6 +63,9 @@ const Login = () => {
       >
         Submit
       </Button>
+      <Link to="/forgot-password"
+        className="text-center p-2 rounded bg-primary text-light">Your forgot password</Link>
+      <h1>You don't have an account<Link to="/register">Sign up</Link></h1>
     </Form>
   )
 }

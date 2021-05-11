@@ -7,6 +7,7 @@ import ConfirmAccount from './routes/confirmAccount';
 import Register from './routes/register';
 import ForgotPassword from './routes/email';
 import User from './routes/user';
+import NewPassword from './routes/resetPassword';
 import PrivateRoute from './privateRoute';
 import "./App.css";
 
@@ -22,8 +23,7 @@ const App = () => {
         <Route path="/forgot-password" component={ForgotPassword} />
         <Route path="/reset-token" component={Token} />
         <Route path="/confirm-account" component={ConfirmAccount} />
-
-
+        <Route path="/new-password" component={NewPassword} />
         <PrivateRoute path="/user" component={User} />
       </Switch>
     </Layout>

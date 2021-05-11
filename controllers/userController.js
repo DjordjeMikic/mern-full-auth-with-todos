@@ -84,12 +84,23 @@ const register = (req, res) => {
 }
 
 const setNewPassword = (req, res) => {
-  let query = User.findById(req.params.id);
-  query.select('_id username password');
-  query.exec((e, result) => {
-    if(e) throw e;
-    res.statsu(200).json(result);
-  })
+  if(req.body.confirmPassword === req.body.password) {
+    bcrypt.genSalt(10, (e, salt) => {
+      if(e) throw e;
+      bcrypt.hash(req.body.password, salt, (e, hash) => {
+        User.updateOne(
+          { _id: req.params },
+          { $set: { password: hash } },
+          (e, data) => {
+            if(e) throw e;
+            res.status(201).json({ success: 'Password has been changed successfully' });
+          }
+        )
+      })
+    });
+  } else {
+    res.status(402).json({ error: 'Pasword and confrmPassword are different' });
+  }
 }
 
 const getData = (req, res) => {

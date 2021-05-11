@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import { Form, Input, Label, Button } from 'reactstrap';
+import { PasswordInput, CustomAlert } from '../components/common';
+import { register, setError, setSuccess } from '../store/user/actions';
 
 const Register = () => {
-  let [info, setInfo] = React.useState({
+  let [info, setInfo] = useState({
     name: '',
     lname: '',
     username: '',
@@ -10,10 +14,24 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     gender: 'male',
-    age: 16
+    age: ''
   });
+  let arr = Object.keys(info).filter(a => a !== 'gender' && !a.match(/password/gi));
+  const { user } = useSelector(state => state);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const onChange = (a) => {
+    if(a.target.name === 'age') {
+      if(!isNaN(parseInt(a.target.value))) {
+        setInfo({
+          ...info,
+          [a.target.name]: parseInt(a.target.value)
+        })
+      } else {
+        return;
+      }
+    }
     setInfo({
       ...info,
       [a.target.name]: a.target.value
@@ -22,55 +40,65 @@ const Register = () => {
 
   const onSubmit = (a) => {
     a.preventDefault();
-    console.log(info);
+    dispatch(register(info));
   }
 
+  useEffect(() => {
+    // console.log(arr);
+    return () => {
+      dispatch(setError(null));
+      dispatch(setSuccess(null));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if(user.success) {
+      setInfo({
+        name: '',
+        lname: '',
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        gender: 'male',
+        age: 16
+      })
+    }
+  }, [user.success]);
+
   return (
-    <Form onSubmit={onSubmit}
+    <Form
+      onSubmit={onSubmit}
       className="h-100 w-50 d-flex justify-content-around flex-column">
+
       <h1>Register</h1>
-      <Input
-        type="text"
-        placeholder="Your Name"
-        className="fs-5"
-        name="name"
-        onChange={onChange}
-        value={info.name}
-        required
-      />
 
-      <Input
-        type="text"
-        placeholder="Your Lname"
-        className="fs-5"
-        name="lname"
-        onChange={onChange}
-        value={info.lname}
-        required
-      />
+      <CustomAlert
+        info={user.success}
+        color="success"
+        toggle={() => dispatch(setSuccess(null))} />
+      <CustomAlert
+        info={user.error}
+        color="danger"
+        toggle={() => dispatch(setError(null))} />
 
-      <Input
-        type="text"
-        placeholder="Your Username"
-        className="fs-5"
-        name="username"
-        onChange={onChange}
-        value={info.username}
-        required
-      />
 
-      <Input
-        type="email"
-        placeholder="Your Email"
-        className="fs-5"
-        name="email"
-        onChange={onChange}
-        value={info.email}
-        required
-      />
+      {arr.map((a, b) => {
+        return (
+          <Input
+            type={a === "email" ? 'email' : 'text'}
+            key={a + b}
+            placeholder={`Your ${a}`}
+            className="fs-5"
+            name={a}
+            onChange={onChange}
+            value={info[a]}
+            required
+          />
+        )
+      })}
 
-      <Input
-        type="password"
+      <PasswordInput
         placeholder="Your Password"
         className="fs-5"
         name="password"
@@ -79,8 +107,7 @@ const Register = () => {
         required
       />
 
-      <Input
-        type="password"
+      <PasswordInput
         placeholder="Confirm Your Password"
         className="fs-5"
         name="confirmPassword"
@@ -112,16 +139,7 @@ const Register = () => {
         />
       </div>
 
-      <Input
-        type="number"
-        placeholder="Your age"
-        className="fs-5"
-        name="age"
-        min="16"
-        max="99"
-        value={info.age}
-        onChange={onChange}
-      />
+      <h4>You already have an account <Link to="/">Sign In</Link></h4>
 
       <Button type="submit" color="primary" className="fs-5">Submit</Button>
     </Form>
