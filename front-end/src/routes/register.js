@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
 import { Form, Input, Label, Button } from 'reactstrap';
 import { PasswordInput, CustomAlert } from '../components/common';
 import { register, setError, setSuccess } from '../store/user/actions';
 
 const Register = () => {
-  let [info, setInfo] = useState({
+  const [info, setInfo] = useState({
     name: '',
     lname: '',
     username: '',
@@ -16,10 +16,9 @@ const Register = () => {
     gender: 'male',
     age: ''
   });
-  let arr = Object.keys(info).filter(a => a !== 'gender' && !a.match(/password/gi));
+  const arr = Object.keys(info).filter(a => a !== 'gender' && !a.match(/password/gi));
   const { user } = useSelector(state => state);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const onChange = (a) => {
     if(a.target.name === 'age') {

@@ -2,7 +2,8 @@ const initialState = {
   userInfo: null,
   userToken: null,
   error: null,
-  success: null
+  success: null,
+  notes: null
 }
 
 function reducer(state = initialState, action) {
@@ -29,6 +30,12 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         success: action.payload
+      }
+
+    case 'SET_NOTES':
+      return {
+        ...state,
+        notes: action.payload
       }
 
     default:

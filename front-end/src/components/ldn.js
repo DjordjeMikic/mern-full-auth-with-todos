@@ -1,9 +1,10 @@
 import React from 'react';
+import { Spinner } from 'reactstrap';
 
 const Ldn = () => {
   return (
-    <div className="flex column">
-      <h1>Loading</h1>
+    <div className="ldn-container flex column">
+      <Spinner color="primary" />
     </div>
   )
 }
